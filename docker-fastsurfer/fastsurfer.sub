@@ -1,0 +1,40 @@
+# Use the Docker universe
+universe = docker
+
+# Specify the Docker image
+docker_image = deepmi/fastsurfer:latest
+docker_override_entrypoint = True
+
+# Set the command to run inside the Docker container (bash shell)
+executable = /bin/bash
+
+# Pass arguments (run the run script)
+arguments = "fastsurfer_run_script.bash $(my_input) $(my_output)"
+
+# transfer input files including the variable input file
+transfer_input_files = license.txt, fastsurfer_run_script.bash, $(my_input)
+transfer_output_files = $(my_output)
+## transfer all new files in working folder
+##should_transfer_files = YES
+##when_to_transfer_output = ON_EXIT
+
+# Use the basename of the input file to link output and error files
+output = fastsurfer_output_$(my_input:bs).txt
+error = fastsurfer_error_$(my_input:bs).txt
+
+# Log file for HTCondor job events
+log = fastsurfer_log.txt
+
+# Request resources (adjust as needed)
+request_cpus = 8
+request_memory = 40GB
+request_disk = 16GB
+
+# Queue jobs with different input and output filenames
+queue my_input, my_output from (
+    MLAC_1__7__Ax_T1_BRAVO_2.4mm__31.nii  fastsurfer_output_MLAC_1.tar.gz
+    MLAC_2__8__Ax_T1_BRAVO_3mm__363.nii  fastsurfer_output_MLAC_2.tar.gz
+    MLAC_3__7__Ax_T1_BRAVO_2.4mm__671.nii  fastsurfer_output_MLAC_3.tar.gz
+    MLAC_4__7__Ax_T1_BRAVO_2.4mm__964.nii  fastsurfer_output_MLAC_4.tar.gz
+    MLAC_5__7__Ax_T1_bravo_2.4mm__1279.nii  fastsurfer_output_MLAC_5.tar.gz
+)
