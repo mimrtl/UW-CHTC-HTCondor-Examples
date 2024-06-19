@@ -1,0 +1,22 @@
+container_image = docker://projectmonai/monai:latest
+universe = container
+
+log = job_$(Cluster)_$(Process).log
+error = job_$(Cluster)_$(Process).err
+output = job_$(Cluster)_$(Process).out
+
+executable = monai_train_v1.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT_OR_EVICT
+transfer_input_files = ALTS.zip, WORD.zip, monai_train_v1.sh
+
++WantGPULab = true
++GPUJobLength = "long"
+request_gpus = 1
+require_gpus = GlobalMemoryMb >= 20000
+request_cpus = 16
+request_memory = 80GB
+request_disk = 50GB
+
+queue
