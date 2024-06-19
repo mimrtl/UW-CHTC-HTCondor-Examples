@@ -1,7 +1,7 @@
 import os
 import wandb
 
-wandb.login(key = "41c33ee621453a8afcc7b208674132e0e8bfafdb")
+wandb.login(key = "PUT_YOUR_KEY_HERE")
 
 # Set the environment variable for the Matplotlib configuration directory
 os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
